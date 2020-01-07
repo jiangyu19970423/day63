@@ -3,10 +3,13 @@ package cn.nyse.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_office")
-public class SysOffice {
+public class SysOffice implements Serializable {
     /**
      * 编号
      */
@@ -133,6 +136,74 @@ public class SysOffice {
      * 备注信息
      */
     private String remarks;
+
+    private String description;
+
+    @Transient
+    private String areaName;
+
+    @Transient
+    private List<Waste> wastes;//关联waste列表
+
+    public List<Waste> getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(List<Waste> wastes) {
+        this.wastes = wastes;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    /**
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "SysOffice{" +
+                "id=" + id +
+                ", parentId=" + parentId +
+                ", parentIds='" + parentIds + '\'' +
+                ", areaId=" + areaId +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", grade='" + grade + '\'' +
+                ", address='" + address + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", master='" + master + '\'' +
+                ", phone='" + phone + '\'' +
+                ", fax='" + fax + '\'' +
+                ", email='" + email + '\'' +
+                ", website='" + website + '\'' +
+                ", createBy='" + createBy + '\'' +
+                ", createDate=" + createDate +
+                ", updateBy='" + updateBy + '\'' +
+                ", updateDate=" + updateDate +
+                ", delFlag='" + delFlag + '\'' +
+                ", icon='" + icon + '\'' +
+                ", logo='" + logo + '\'' +
+                ", roles='" + roles + '\'' +
+                ", remarks='" + remarks + '\'' +
+                '}';
+    }
 
     /**
      * 获取编号

@@ -9,6 +9,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +34,8 @@ import java.util.Properties;
  */
 @Configuration
 @MapperScan(basePackages = "cn.nyse.mapper")
-@Import(SpringTxConfig.class)
+@Import({SpringTxConfig.class,SpringCacheConfig.class})
+@PropertySource(value = "classpath:system.properties",encoding = "utf-8")
 public class SpringMybatisConfig {
     //1.数据源配置
     @Bean

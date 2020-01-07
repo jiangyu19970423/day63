@@ -21,7 +21,8 @@
   		a.click(function(){
   			var icon = $(this).find("i").attr('class');
   			var $input = parent.$('#icon-input');
-  			$input.val(icon);
+  			// $input.val(icon);
+  			parent.layer.icon=icon;
   			$input.next().attr('class','ace-icon '+icon+' bigger-200 pink');
   			var index = parent.layer.getFrameIndex(window.name);
   			parent.layer.close(index);
