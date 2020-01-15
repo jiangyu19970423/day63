@@ -81,4 +81,12 @@ public class SysOfficeController {
     public List<WasteType> selectWasteType(){
         return wasteTypeService.selectAll();
     }
+
+
+
+
+    @RequestMapping("selectByRid")
+    public List<SysOffice> selectByRid(long rid){
+        return service.selectByRid(rid);
+    }
 }

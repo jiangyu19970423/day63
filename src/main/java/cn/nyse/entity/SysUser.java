@@ -1,10 +1,12 @@
 package cn.nyse.entity;
 
+import javax.management.relation.Role;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_user")
 public class SysUser {
@@ -124,6 +126,17 @@ public class SysUser {
      */
     @Column(name = "head_picture")
     private String headPicture;
+
+    @Transient
+    private List<Role> roles;
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     @Transient
     private SysOffice sysOffice;//关联公司属性

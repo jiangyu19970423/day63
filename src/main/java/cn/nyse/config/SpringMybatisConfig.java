@@ -1,11 +1,13 @@
 package cn.nyse.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -21,12 +23,13 @@ import java.util.Properties;
  * @Date: 2019/12/23/17:57
  * @Description:
  */
+
 /**
  * spring与mybatis整合配置：
  * 1.数据源配置
  * 2.SqlSessionFactoryBean配置
  * 3.开启扫描mapper接口
- *
+ * <p>
  * spring整合日志：
  * 1.导入log4j2\slf4j依赖
  * 2.在resources下放入log4j2.xml
@@ -34,12 +37,12 @@ import java.util.Properties;
  */
 @Configuration
 @MapperScan(basePackages = "cn.nyse.mapper")
-@Import({SpringTxConfig.class,SpringCacheConfig.class})
-@PropertySource(value = "classpath:system.properties",encoding = "utf-8")
+@Import({SpringTxConfig.class, SpringCacheConfig.class})
+@PropertySource(value = "classpath:system.properties", encoding = "utf-8")
 public class SpringMybatisConfig {
     //1.数据源配置
     @Bean
-    public DruidDataSource getDataSource(){
+    public DruidDataSource getDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
         InputStream is = SpringMybatisConfig.class.getClassLoader().getResourceAsStream("db.properties");
         Properties properties = new Properties();
@@ -56,7 +59,7 @@ public class SpringMybatisConfig {
      * 替代原mybatis的总配置文件，用于读取数据源获取一个连接回话对象的工厂bean
      * */
     @Bean
-    public SqlSessionFactoryBean getFactoryBean(DruidDataSource dataSource){
+    public SqlSessionFactoryBean getFactoryBean(DruidDataSource dataSource) {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);//设置数据源
         tk.mybatis.mapper.session.Configuration configuration = new tk.mybatis.mapper.session.Configuration();
@@ -68,5 +71,27 @@ public class SpringMybatisConfig {
         factoryBean.setPlugins(new Interceptor[]{pageInterceptor});
         return factoryBean;
 
+    }
+
+    /**
+     * 设置spring监控：
+     * 1.设置DruidStatInterceptor
+     * 2.设置BeanNameAutoProxyCreator
+     *
+     * @return
+     */
+    @Bean("druidStatInterceptor")
+    public DruidStatInterceptor getDruidStatInterceptor() {
+        return new DruidStatInterceptor();
+    }
+
+    //设置代理
+    @Bean
+    public BeanNameAutoProxyCreator getAutoProxyCreator() {
+        BeanNameAutoProxyCreator proxyCreator = new BeanNameAutoProxyCreator();
+        proxyCreator.setInterceptorNames("druidStatInterceptor");
+        proxyCreator.setProxyTargetClass(true);
+        proxyCreator.setBeanNames(new String[]{"*Mapper", "*ServiceImpl"});//设置需要监控的类
+        return proxyCreator;
     }
 }

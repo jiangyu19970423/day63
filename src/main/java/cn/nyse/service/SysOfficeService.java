@@ -4,6 +4,7 @@ import cn.nyse.entity.SysArea;
 import cn.nyse.entity.SysOffice;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SysOfficeService extends IService<SysOffice> {
@@ -14,5 +15,7 @@ public interface SysOfficeService extends IService<SysOffice> {
     SysOffice selectByOid(long oid);
 
     int update(SysOffice sysOffice);
+
+    List<SysOffice> selectByRid(long rid);
 
 }

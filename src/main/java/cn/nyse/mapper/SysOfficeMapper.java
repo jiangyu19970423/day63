@@ -31,4 +31,15 @@ public interface SysOfficeMapper extends Mapper<SysOffice> {
 
     @InsertProvider(type = SysOfficeProvider.class,method = "insertBathOfficeWaste")
     int insertBathOfficeWaste(@Param("id") long id,@Param("wasteIds") long[] wasteIds);
+
+
+    @Select("select " +
+            " sof.* " +
+            "from " +
+            " sys_role_office sro,sys_office sof " +
+            "where " +
+            " sro.role_id=#{rid} " +
+            "and " +
+            " sro.office_id=sof.id")
+    List<SysOffice> selectByRid(long rid);
 }

@@ -137,8 +137,6 @@ public class SysOffice implements Serializable {
      */
     private String remarks;
 
-    private String description;
-
     @Transient
     private String areaName;
 
@@ -159,20 +157,6 @@ public class SysOffice implements Serializable {
 
     public void setAreaName(String areaName) {
         this.areaName = areaName;
-    }
-
-    /**
-     * @return description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description
-     */
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
     }
 
     @Override

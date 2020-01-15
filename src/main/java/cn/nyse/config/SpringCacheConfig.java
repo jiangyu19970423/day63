@@ -115,6 +115,7 @@ public class SpringCacheConfig {
         HashSet<String> cacheNames = new HashSet<>();
         cacheNames.add("sysOfficeCache");
         cacheNames.add("statuteCache");
+        cacheNames.add("resourceCache");
         redisCacheManager.setCacheNames(cacheNames);
         return redisCacheManager;
     }

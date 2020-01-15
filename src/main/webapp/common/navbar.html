@@ -105,7 +105,7 @@
                     <img class="nav-user-photo" src="static/img/small-male-pic.png"/>
                     <span class="user-info">
 									<small>你好,</small>
-									超级管理员
+									{{name}}
 								</span>
 
                     <i class="ace-icon fa fa-caret-down"></i>
@@ -132,3 +132,39 @@
         </ul>
     </div>
 </div><!-- /.navbar-container -->
+
+<script>
+    let vm = new Vue({
+        el: '#navbar-container',
+        data: {
+            name
+        },
+        methods: {
+            logout: function () {//退出登录      1.发送请求服务器，注销服务器的用户状态    2.注销客户端保持的用户状态
+                axios({
+                    url: 'logout'
+                }).then(response => {
+                    // console.log(response.data);
+                    if (response.data.success) {
+                        sessionStorage.clear();//清除保持数据
+                        debugger;
+                        location.href = 'toLogin';
+                    }
+
+                }).catch(function (error) {
+                    layer.msg(error);
+                })
+            }
+        },
+        mounted: function () {
+            let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            if (userInfo != null) {
+                this.name = userInfo.name;
+            } else {//登录授权处理，未登录跳转到登录页
+                debugger;
+                location.href = "toLogin";
+            }
+            //this.name=JSON.parse(sessionStorage.getItem("userInfo")).name;
+        }
+    });
+</script>
